@@ -1,6 +1,12 @@
 # UK Charities MCP Server
 
-An MCP (Model Context Protocol) server for querying UK charity data from the official Charity Commission for England & Wales API.
+[![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MCP](https://img.shields.io/badge/MCP-Server-green.svg)](https://modelcontextprotocol.io/)
+
+Query UK charity data directly from Claude using the official Charity Commission API.
+
+> **Why I built this:** MCP integration with UK public sector data APIs. See also: [food-hygiene-mcp](https://github.com/w4sspr/food-hygiene-mcp) for FSA food hygiene ratings.
 
 ## Features
 
@@ -13,25 +19,19 @@ Query registered charities with 4 specialized tools:
 | `get_charity_trustees` | List of current trustees |
 | `get_governing_document` | Charitable objects, governing doc, area of benefit |
 
-## Installation
-
-### Prerequisites
-
-- Python 3.14+
-- [uv](https://docs.astral.sh/uv/) package manager
-- CCEW API key (free at [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/))
-
-### Setup
+## Quick Start
 
 ```bash
-git clone https://github.com/yourusername/uk-charities-mcp.git
+# 1. Clone and install
+git clone https://github.com/w4sspr/uk-charities-mcp.git
 cd uk-charities-mcp
 uv sync
+
+# 2. Get your free API key from:
+#    https://api-portal.charitycommission.gov.uk/
+
+# 3. Add to Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json):
 ```
-
-## Usage with Claude Desktop
-
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
 ```json
 {
@@ -46,6 +46,14 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   }
 }
 ```
+
+**4. Restart Claude Desktop and ask:** "Get details for Oxfam (charity 202918)"
+
+## Prerequisites
+
+- Python 3.14+
+- [uv](https://docs.astral.sh/uv/) package manager
+- CCEW API key (free at [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/))
 
 ## Finding Charity Registration Numbers
 
@@ -156,6 +164,13 @@ To find a charity's registration number:
 2. Search for the charity by name
 3. Copy the registration number from the results
 4. Use that number with this MCP
+
+## Roadmap
+
+- [ ] Scotland charities via [OSCR API](https://www.oscr.org.uk/)
+- [ ] Northern Ireland charities via [CCNI API](https://www.charitycommissionni.org.uk/)
+- [ ] Caching layer to reduce API calls
+- [ ] Bulk lookup for comparing multiple charities
 
 ## License
 
