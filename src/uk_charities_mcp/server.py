@@ -5,7 +5,7 @@ Query registered charities in England & Wales via the official Charity Commissio
 
 from mcp.server.fastmcp import FastMCP
 
-from uk_charities_mcp.client import CCEWClient, CCEWError
+from uk_charities_mcp.client import CCEWClient
 from uk_charities_mcp.models import (
     CharityContact,
     CharityDetails,
