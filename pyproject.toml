@@ -1,9 +1,15 @@
 [project]
 name = "uk-charities-mcp"
 version = "0.1.0"
-description = "MCP server for querying UK Charity Commission data via CharityBase"
+description = "MCP server for querying UK Charity Commission data"
 readme = "README.md"
 requires-python = ">=3.14"
+license = "MIT"
+keywords = ["mcp", "charity", "uk", "ccew", "api", "claude"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.14",
+]
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=1.25.0",
