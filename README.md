@@ -21,16 +21,37 @@ Query registered charities with 4 specialized tools:
 
 ## Quick Start
 
+1. Get your free API key from [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/)
+2. Add to Claude Desktop config (see below)
+3. Restart Claude Desktop
+4. Ask: "Get details for Oxfam (charity 202918)"
+
+## Claude Desktop Configuration
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+
+### Option 1: Via PyPI (recommended)
+
+```json
+{
+  "mcpServers": {
+    "uk-charities": {
+      "command": "uvx",
+      "args": ["uk-charities-mcp"],
+      "env": {
+        "CCEW_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### Option 2: From source
+
 ```bash
-# 1. Clone and install
 git clone https://github.com/w4sspr/uk-charities-mcp.git
 cd uk-charities-mcp
 uv sync
-
-# 2. Get your free API key from:
-#    https://api-portal.charitycommission.gov.uk/
-
-# 3. Add to Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json):
 ```
 
 ```json
@@ -47,11 +68,10 @@ uv sync
 }
 ```
 
-**4. Restart Claude Desktop and ask:** "Get details for Oxfam (charity 202918)"
+> **Note:** If you get `spawn uvx ENOENT` or `spawn uv ENOENT`, use the full path. Run `which uvx` or `which uv` to find it, then use that path in the `command` field.
 
 ## Prerequisites
 
-- Python 3.14+
 - [uv](https://docs.astral.sh/uv/) package manager
 - CCEW API key (free at [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/))
 
