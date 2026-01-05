@@ -1,39 +1,24 @@
 # UK Charities MCP Server
 
+Query UK charity data from Claude.
+
 [![PyPI](https://img.shields.io/pypi/v/uk-charities-mcp.svg)](https://pypi.org/project/uk-charities-mcp/)
 [![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-Server-green.svg)](https://modelcontextprotocol.io/)
 
-Query UK charity data directly from Claude using the official Charity Commission API.
-
 ## Demo
 
 ![Demo GIF](demo.gif)
 
-> **See also:** [food-hygiene-mcp](https://github.com/w4sspr/food-hygiene-mcp) for FSA food hygiene ratings — part of a series exploring MCP integration with UK public sector APIs.
-
-## Features
-
-Query registered charities with 4 specialized tools:
-
-| Tool | Description |
-|------|-------------|
-| `get_charity_details` | Full charity info: contact, trustees, causes, finances |
-| `get_charity_financials` | 5 years of detailed income & spending breakdowns |
-| `get_charity_trustees` | List of current trustees |
-| `get_governing_document` | Charitable objects, governing doc, area of benefit |
-
 ## Quick Start
 
-1. Get your free API key from [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/)
-2. Add to Claude Desktop config (see below)
-3. Restart Claude Desktop
-4. Ask: "Get details for Oxfam (charity 202918)"
+**Prerequisites:** Free API key from [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/)
 
-## Claude Desktop Configuration
+Add to your Claude Desktop config:
 
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
 ### Option 1: Via PyPI (recommended)
 
@@ -73,122 +58,76 @@ uv sync
 }
 ```
 
-> **Note:** If you get `spawn uvx ENOENT` or `spawn uv ENOENT`, use the full path. Run `which uvx` or `which uv` to find it, then use that path in the `command` field.
+> **Troubleshooting:** If you get `spawn uvx ENOENT` or `spawn uv ENOENT`, Claude Desktop can't find the executable. Use the full path instead (run `which uvx` or `which uv` to find it, e.g., `/Users/you/.local/bin/uvx`).
 
-## Prerequisites
+Restart Claude Desktop, then try:
 
-- [uv](https://docs.astral.sh/uv/) package manager
-- CCEW API key (free at [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/))
+> "Get details for Oxfam (charity 202918)"
 
-## Finding Charity Registration Numbers
+## Example Prompts
 
-This MCP requires charity registration numbers. Find them at:
-**https://register-of-charities.charitycommission.gov.uk/**
+- "Get details for charity 202918" (Oxfam)
+- "Show me the financial history for the British Heart Foundation (225971)"
+- "Who are the trustees of Cancer Research UK (1089464)?"
+- "What are the charitable objects of the RSPCA (219099)?"
 
-### Example Charities
+**Note:** This MCP requires charity registration numbers. Find them at [register-of-charities.charitycommission.gov.uk](https://register-of-charities.charitycommission.gov.uk/)
 
-| Charity | Registration # |
-|---------|----------------|
+| Example Charities | Registration # |
+|-------------------|----------------|
 | Oxfam | 202918 |
 | British Heart Foundation | 225971 |
 | Cancer Research UK | 1089464 |
 | RSPCA | 219099 |
-| Barnardo's | 216250 |
 | Save the Children | 213890 |
-| British Red Cross | 220949 |
 
-## Example Prompts
+## Tools
 
-Once connected, try asking Claude:
+### `get_charity_details`
 
-- "Get details for charity 202918" (Oxfam)
-- "Show me the financial history for the British Heart Foundation (225971)"
-- "Who are the trustees of Cancer Research UK?"
-- "What are the charitable objects of the RSPCA?"
+Full charity info: name, status, contact, trustees, causes, beneficiaries, latest income/spending.
 
-## Development
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `registration_number` | int | Charity registration number |
 
-### Running Tests
+### `get_charity_financials`
 
-```bash
-export CCEW_API_KEY=your-api-key
-uv run pytest tests/ -v
-```
+Up to 5 years of detailed financial records.
 
-### Testing with MCP Inspector
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `registration_number` | int | Charity registration number |
 
-```bash
-CCEW_API_KEY=your-api-key uv run mcp dev src/uk_charities_mcp/server.py
-```
+Returns breakdowns: donations & legacies, charitable activities, trading, investments, government grants, fundraising, governance.
 
-## API Details
+### `get_charity_trustees`
 
-This server uses the official [Charity Commission API](https://api-portal.charitycommission.gov.uk/), which provides live data from the Register of Charities.
+List of current trustees.
 
-### Tool Specifications
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `registration_number` | int | Charity registration number |
 
-#### get_charity_details
+### `get_governing_document`
 
-```python
-get_charity_details(registration_number: int) -> CharityDetails
-```
+Charitable objects (mission), governing document description, area of benefit.
 
-Returns: name, registration number, charity type, status, registration date, contact info, trustees, causes, beneficiaries, operations, latest income/spending.
-
-#### get_charity_financials
-
-```python
-get_charity_financials(registration_number: int) -> CharityFinancials
-```
-
-Returns up to 5 years of detailed financial records with breakdowns:
-- **Income**: donations & legacies, charitable activities, trading, investments, government grants
-- **Spending**: charitable activities, fundraising, governance, grants to institutions
-
-#### get_charity_trustees
-
-```python
-get_charity_trustees(registration_number: int) -> CharityTrustees
-```
-
-Returns the charity name and list of current trustees.
-
-#### get_governing_document
-
-```python
-get_governing_document(registration_number: int) -> GoverningDocument
-```
-
-Returns the charity's charitable objects (mission statement), governing document description, and area of benefit.
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `registration_number` | int | Charity registration number |
 
 ## Limitations
 
-### What This MCP Cannot Do
+- **No search by name** — CCEW API has no search endpoint; you must provide the registration number
+- **England & Wales only** — Scotland uses [OSCR](https://www.oscr.org.uk/), Northern Ireland uses [CCNI](https://www.charitycommissionni.org.uk/)
+- **No aggregate statistics** — can't query "largest charities" or sector-wide stats
+- **Current trustees only** — API doesn't provide historical trustee records
 
-| Limitation | Reason |
-|------------|--------|
-| **Search by name** | CCEW API has no search endpoint. You must provide the registration number. |
-| **Scotland charities** | Only covers England & Wales. Scottish charities are regulated by [OSCR](https://www.oscr.org.uk/). |
-| **Northern Ireland charities** | Only covers England & Wales. NI charities are regulated by [CCNI](https://www.charitycommissionni.org.uk/). |
-| **Sector-wide statistics** | Cannot aggregate across all charities without downloading the full register. |
-| **Historical trustees** | API only provides current trustees, not historical records. |
-
-### Prompts That Won't Work
-
-These types of requests require search functionality or aggregation that the API doesn't support:
-
+**Prompts that won't work:**
 - "Find mental health charities in London" (no search by cause/location)
-- "List the largest charities by income" (no ranking/sorting)
+- "List the largest charities by income" (no ranking)
 - "How many charities are there in the UK?" (no aggregate stats)
-- "Compare Oxfam and Save the Children" (works, but you need both reg numbers)
-
-### Workaround
-
-To find a charity's registration number:
-1. Go to [register-of-charities.charitycommission.gov.uk](https://register-of-charities.charitycommission.gov.uk/)
-2. Search for the charity by name
-3. Copy the registration number from the results
-4. Use that number with this MCP
 
 ## Roadmap
 
@@ -196,6 +135,25 @@ To find a charity's registration number:
 - [ ] Northern Ireland charities via [CCNI API](https://www.charitycommissionni.org.uk/)
 - [ ] Caching layer to reduce API calls
 - [ ] Bulk lookup for comparing multiple charities
+
+## Development
+
+```bash
+# Run tests
+export CCEW_API_KEY=your-api-key
+uv run pytest tests/ -v
+
+# Test with MCP Inspector
+CCEW_API_KEY=your-api-key uv run mcp dev src/uk_charities_mcp/server.py
+```
+
+## See Also
+
+> **Why I built this:** MCP integration with UK public sector data APIs. See also: [food-hygiene-mcp](https://github.com/w4sspr/food-hygiene-mcp) for FSA food hygiene ratings.
+
+## Data Source
+
+[Charity Commission API](https://api-portal.charitycommission.gov.uk/) — free, requires API key.
 
 ## License
 
