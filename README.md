@@ -7,6 +7,10 @@
 
 Query UK charity data directly from Claude using the official Charity Commission API.
 
+## Demo
+
+![Demo GIF](demo.gif)
+
 > **Why I built this:** MCP integration with UK public sector data APIs. See also: [food-hygiene-mcp](https://github.com/w4sspr/food-hygiene-mcp) for FSA food hygiene ratings.
 
 ## Features
