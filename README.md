@@ -1,6 +1,6 @@
 # UK Charities MCP Server
 
-Query UK charity data from Claude.
+Query UK charity data via MCP.
 
 [![PyPI](https://img.shields.io/pypi/v/uk-charities-mcp.svg)](https://pypi.org/project/uk-charities-mcp/)
 [![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
@@ -15,7 +15,7 @@ Query UK charity data from Claude.
 
 **Prerequisites:** Free API key from [api-portal.charitycommission.gov.uk](https://api-portal.charitycommission.gov.uk/)
 
-Add to your Claude Desktop config:
+Works with any MCP-compatible client (Claude Desktop, VS Code, Cursor, etc.). Example for Claude Desktop:
 
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
